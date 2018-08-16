@@ -8,8 +8,9 @@ LDOPTS:= $(addprefix -Xlinker ,$(LDFLAGS)) -lm
 OBJDUMP := objdump
 SIZE := size
 
-bin/$(TARGET).elf:	$(OBJS)
-# Linker
+OBJS := $(shell find .obj -name "*.o")
+
+bin/$(TARGET).elf: $(OBJS)
 	@mkdir -p bin
 	@echo [LD] bin/$(TARGET).elf
 	@$(LD) $(CFLAGS) $(OBJS) $(LDOPTS)
@@ -17,3 +18,5 @@ bin/$(TARGET).elf:	$(OBJS)
 	@echo
 	@echo 'Size summary:'
 	@$(SIZE)  --format=berkeley bin/$(TARGET).elf
+	
+all: bin/$(TARGET).elf
