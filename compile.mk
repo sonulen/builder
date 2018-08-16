@@ -17,11 +17,11 @@ OBJECTS = $(SOURCE:.cpp=.o)
 OBJS = $(addprefix $(DIRS_OBJ),$(OBJECTS))
 
 # Формируем зависимости
-DEPS = $(addprefix $(DIRS_DEPS),$(OBJS:.o=.d))
+DEPS = $(addprefix $(DIRS_DEPS),$(OBJECTS:.o=.d))
 #DEPFLAGS = -MT $@ -MMD -MP -MF .d/$*.Td
 DEPFLAGS = -MMD -MP -MF .d/$*.Td
 DIRFLAGS = $(addprefix -I, $(DIRS))
-DEFFLAGS = $(addprefix -D,$(DEFS))
+DEFFLAGS = $(addprefix -D,$(DEFS)) $(addprefix -D,$(DEFS_EXT))
 
 #this would rename temporary dep files (.Td) into final *.d ones
 POSTCOMPILE = @mv -f .d/$*.Td .d/$*.d && touch $@
