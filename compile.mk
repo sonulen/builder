@@ -1,18 +1,20 @@
 # Путь к локальным директориям
-DIRS := ./
+DIRS += .
 DIRS_OBJ := .obj/
 DIRS_BIN := bin/
 DIRS_DEPS := .d/
 
 # Флаги компиляции
-CPP := g++
+AS := gcc
+CC :=  gcc
+CPP :=  g++
 OPTIM := -O0
 BFLAGS += -Wall -g3 -Wextra -Werror -flto
 CPPFLAGS += $(OPTIM) $(BFLAGS) -std=c++17 -pthread
 
 # Объекты формируем
 OBJECTS = $(SOURCE:.cpp=.o)
-OBJS = $(addprefix .obj/,$(OBJECTS))
+OBJS = $(addprefix $(DIRS_OBJ),$(OBJECTS))
 
 # Формируем зависимости
 DEPS = $(addprefix $(DIRS_DEPS),$(OBJS:.o=.d))
@@ -27,13 +29,15 @@ POSTCOMPILE = @mv -f .d/$*.Td .d/$*.d && touch $@
 #directory, where this (makefile) file is located (for dependancy)
 ROOT_DIR := $(notdir $(CURDIR))
 PROJ_DIR := $(dir $(firstword $(MAKEFILE_LIST)))
-MAKEFILE_DEPS := $(PROJ_DIR)/Makefile 
+
+MAKEFILE_DEPS := makefile builder/compile.mk
+MAKEFILE_DEPS += $(PROJ_DIR)/makefile 
 
 # Подтягиваем зависимости
 -include $(DEPS)
 
 # compile and generate dependency info
-.obj/%.o: %.cpp  $(MAKEFILE_DEPS) 
+.obj/%.o: %.cpp $(MAKEFILE_DEPS)
 	@echo [CPP] $<
 	@mkdir -p $(dir .d/$<)
 	@mkdir -p $(dir .obj/$<)
@@ -42,3 +46,6 @@ MAKEFILE_DEPS := $(PROJ_DIR)/Makefile
 	
 .d/%.d: ;
 .PRECIOUS: .d/%.d
+
+.SECONDEXPANSION:
+all: $$(OBJS)
