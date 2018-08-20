@@ -8,7 +8,7 @@ DIRS_DEPS := .d/
 AS := gcc
 CC :=  gcc
 CPP :=  g++
-OPTIM := -O0
+# OPTIM := -O0
 BFLAGS += -Wall -g3 -Wextra -Werror -flto
 CPPFLAGS += $(OPTIM) $(BFLAGS) -std=c++17 -pthread
 
