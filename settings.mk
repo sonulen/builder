@@ -14,6 +14,8 @@ MARK := release
 endif
 
 export OPTIM
+export MARK
+export DEFS
 
 # Метки что б если был дебаг пересобирать для релиза	
 .obj/debug: 
