@@ -23,6 +23,7 @@ FLTO := on
 # DIRS := $(shell find .. -not -path '*/\.*' -not -path '../builder' -type d)
 SOURCE :=
 
+ASM := on
 
 PATH_TO_BUILDER = builder.mk
 include $(PATH_TO_BUILDER)

@@ -9,7 +9,7 @@ export OBJS_PATH := .objs
 endif
 
 ifndef BIN_PATH
-export BIN_PATH 	:= .bin
+export BIN_PATH := .bin
 endif
 
 # BUILD TYPE
