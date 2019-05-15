@@ -13,7 +13,13 @@ CHANGE_CPP = $(CHANGE_UPPER_S:.cpp=.o)
 OBJS = $(addprefix $(OBJS_PATH)/,$(CHANGE_CPP))
 DEPS = $(addprefix $(DEPS_PATH)/,$(CHANGE_CPP:.o=.d))
 
-BFLAGS += $(OPTIMIZATION_LVL) $(FLTO_FLAG) -Wall -g3 -Wextra -Werror -ffunction-sections
+ifeq ($(TYPE_OF_BUILD), DEBUG)
+ifndef G_OPTION
+G_OPTION := -g3
+endif
+endif
+
+BFLAGS += $(OPTIMIZATION_LVL) $(FLTO_FLAG) -Wall $(G_OPTION) -Wextra -Werror -ffunction-sections
 CFLAGS += $(BFLAGS)
 CPPFLAGS += $(BFLAGS) -pthread $(CPP_STANDARD)
 
@@ -33,7 +39,7 @@ COMMON_OBJ_DEPS := $(MAKEFILE_LIST)
 
 
 ifeq ($(SILENCE), false)
-$(info Info from compile.mk file:)
+$(info Info from compile_settings.mk file:)
 $(info Sources files = $(SOURCES))
 $(info Object files = $(OBJS))
 $(info Deps files = $(DEPS))

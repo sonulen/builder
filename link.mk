@@ -3,25 +3,20 @@
 # Необходимые переменные для совершения линковки:
 # LD         - Линковщик (бинарник).
 # OBJDUMP    - Бинарник используется для генерации асемблерного файла (man objdump).
-# READELF    - Бинарник не используется (man readelf).
 # PRINT_SIZE - Юниксовая команда для вывода текущего размера.
 # CFLAGS     - Сишные флаги линковки.
 # LDFLAGS    - Общие флаги линковки.
 
 LD := g++
 OBJDUMP := objdump
-READELF := readelf
 SIZE := size
 
-CFLAGS = -Wl,--no-as-needed -pthread
-
-# Собираем объектники для компиляции.
-OBJS := $(shell find $(OBJS_PATH) -name "*.o" )
+CFLAGS := -Wl,--no-as-needed -pthread
 
 # Пути расположения конечных файлов.
-BINARY_FILE := $(BIN_PATH)/$(TARGET).elf
-MAP_FILE := $(BIN_PATH)/$(BUILD)_$(TARGET).map
-ASM_FILE := $(BIN_PATH)/$(BUILD)_$(TARGET).asm
+BINARY_FILE := $(BIN_PATH)/$(NAME).elf
+MAP_FILE := $(BIN_PATH)/$(NAME).map
+ASM_FILE := $(BIN_PATH)/$(NAME).asm
 
 # Добавляем общие флаги линковки
 CFLAGS += -Wall -g3 -Wextra -Werror
@@ -33,15 +28,6 @@ LDFLAGS	+= -lm
 # до текущего момента
 COMMON_OBJ_DEPS := $(MAKEFILE_LIST)
 
-$(BINARY_FILE): $(OBJS) $(COMMON_OBJ_DEPS)
-	@mkdir -p bin
-	@echo [LD] $@
-	@echo
-	@$(LD) $(CFLAGS) $(OBJS) $(LDFLAGS)
-	@echo 'Size summary:'
-	@size --format=berkeley $(BINARY_FILE)
-
-
 ifeq ($(ASM),on)
 # Если флаг присутствует, то пререквезитом является бинарник.
 ASM_GEN = $(ASM_FILE)
@@ -50,10 +36,32 @@ else
 ASM_GEN = $(shell rm -rf $(ASM_FILE))
 endif
 
+ifeq ($(SILENCE), false)
+ifneq ($(BUILD),clean)
+$(info Info from link.mk file: )
+$(info Linker = $(LD))
+$(info Linker C flags = $(CFLAGS))
+$(info Linker flags = $(LDFLAGS))
+$(info )
+endif
+endif
+
+ifndef SIZE_OUTPUT
+SIZE_OUTPUT := berkeley
+endif
+
 # Правило генерации ассемблерного файла
 $(ASM_FILE): $(BINARY_FILE)
 	@echo 'Assembler file generating'
 	@$(OBJDUMP) --source -D $(BINARY_FILE) > $(ASM_FILE)
 
+$(BINARY_FILE): $(OBJS) $(COMMON_OBJ_DEPS)
+	@mkdir -p $(BIN_PATH)
+	@echo
+	@echo [LD] $@
+	@echo
+	@$(LD) $(CFLAGS) $(OBJS) $(LDFLAGS)
+	@echo 'Size summary:'
+	@$(SIZE) --format=$(SIZE_OUTPUT) $(BINARY_FILE)
 
 all: $(BINARY_FILE) $(ASM_GEN)

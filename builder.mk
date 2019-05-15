@@ -13,18 +13,18 @@ ifneq ($(MAKECMDGOALS),clean)
 $(info Path to settings.mk = $(SETTINGS_PATH))
 $(info Path to compile.mk = $(COMPILE_PATH))
 $(info Path to link.mk = $(LINK_PATH))
-$(info )
 endif
+$(info )
 endif
 
 # Главное правило, которое требует объектные файлы.
 .DEFAULT_GOAL:
-all: $(OBJS)
+all:
 
 include $(COMMON_PATH)
 
 ifneq ($(BUILD),clean)
 include $(SETTINGS_PATH)
 include $(COMPILE_PATH)
-#include $(LINK_PATH)
+include $(LINK_PATH)
 endif

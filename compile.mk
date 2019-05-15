@@ -11,11 +11,10 @@
 # CFLAGS   - Флаги передаваемые компилятору при обработке C исходников
 # CPPFLAGS - Флаги передаваемые компилятору при обработке C++ исходников
 
-include $(BUILDER_DIR)settings.mk
 include $(BUILDER_DIR)prebuild.mk
 include $(BUILDER_DIR)compile_settings.mk
 
-# Инклюдим файлы с зависимостями (*.d).
+# Инклюдим файлы с зависимостями (*.d) если они есть.
 -include $(DEPS)
 
 # Правила создания объектных файлов из исходников.
