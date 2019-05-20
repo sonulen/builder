@@ -1,51 +1,48 @@
-# Путь к локальным директориям
-DIRS += .
-DIRS_OBJ := .obj/
-DIRS_BIN := bin/
-DIRS_DEPS := .d/
+# Файл осуществляет непосредственную компиляцию исходников в объектные файлы.
 
-# Флаги компиляции
-AS := gcc
-CC :=  gcc
-CPP :=  g++
-# OPTIM := -O0
-BFLAGS += -Wall -g3 -Wextra -Werror -flto
-CPPFLAGS += $(OPTIM) $(BFLAGS) -std=c++17 -pthread
+# Необходимые переменные для совершения компиляции:
+# AS       - Компилятор ассемблерных файлов.
+# CC       - Компилятор C файлов.
+# CPP      - Компилятор C++ файлов.
+# SOURCES  - Список исходных файлов относительно директории текущего мейкфайла
+# DIRS     - Список диркеторий, где происходит поиск заголовочных файлов.
+# DEFS     - Дефайны(#define), которые передаются компилятору.
+# BFLAGS   - Общие флаги передаваемые компилятору при обработке C и C++ исходников.
+# CFLAGS   - Флаги передаваемые компилятору при обработке C исходников
+# CPPFLAGS - Флаги передаваемые компилятору при обработке C++ исходников
 
-# Объекты формируем
-OBJECTS = $(SOURCE:.cpp=.o)
-OBJS = $(addprefix $(DIRS_OBJ),$(OBJECTS))
+include $(BUILDER_DIR)prebuild.mk
+include $(BUILDER_DIR)compile_settings.mk
 
-# Формируем зависимости
-DEPS = $(addprefix $(DIRS_DEPS),$(OBJECTS:.o=.d))
-#DEPFLAGS = -MT $@ -MMD -MP -MF .d/$*.Td
-DEPFLAGS = -MMD -MP -MF .d/$*.Td
-DIRFLAGS = $(addprefix -I, $(DIRS))
-DEFFLAGS = $(addprefix -D,$(DEFS)) $(addprefix -D,$(DEFS_EXT))
-
-#this would rename temporary dep files (.Td) into final *.d ones
-POSTCOMPILE = @mv -f .d/$*.Td .d/$*.d && touch $@
-
-#directory, where this (makefile) file is located (for dependancy)
-ROOT_DIR := $(notdir $(CURDIR))
-PROJ_DIR := $(dir $(firstword $(MAKEFILE_LIST)))
-
-MAKEFILE_DEPS := makefile builder/compile.mk
-MAKEFILE_DEPS += $(PROJ_DIR)/makefile 
-
-# Подтягиваем зависимости
+# Инклюдим файлы с зависимостями (*.d) если они есть.
 -include $(DEPS)
 
-# compile and generate dependency info
-.obj/%.o: %.cpp $(MAKEFILE_DEPS)
+# Правила создания объектных файлов из исходников.
+$(OBJS_PATH)/%.o: %.c $(COMMON_OBJ_DEPS) $(DEPS_PATH)/%.d
+	@echo [CC] $<
+	@mkdir -p $(dir $(DEPS_PATH)/$<)
+	@mkdir -p $(dir $(OBJS_PATH)/$<)
+	@$(CC) $(CFLAGS) $(DEPFLAGS) $(DIRFLAGS) $(DEFFLAGS) -c $< -o $@
+	@$(POSTCOMPILE)
+
+$(OBJS_PATH)/%.o: %.cpp $(COMMON_OBJ_DEPS) $(DEPS_PATH)/%.d $(DEPS_PATH)/%.flags
 	@echo [CPP] $<
-	@mkdir -p $(dir .d/$<)
-	@mkdir -p $(dir .obj/$<)
+	@mkdir -p $(dir $(DEPS_PATH)/$<)
+	@mkdir -p $(dir $(OBJS_PATH)/$<)
 	@$(CPP) $(CPPFLAGS) $(DEPFLAGS) $(DIRFLAGS) $(DEFFLAGS) -c $< -o $@
 	@$(POSTCOMPILE)
-	
-.d/%.d: ;
-.PRECIOUS: .d/%.d
 
-.SECONDEXPANSION:
-all: $$(OBJS)
+$(OBJS_PATH)/%.o: %.s $(COMMON_OBJ_DEPS)
+	@echo [AS] $<
+	@mkdir -p $(dir $(OBJS_PATH)/$<)
+	@$(AS) $(BFLAGS) $(DIRFLAGS) $(DEFFLAGS) -c $< -o $@
+
+$(OBJS_PATH)/%.o: %.S $(COMMON_OBJ_DEPS)
+	@echo [AS] $<
+	@mkdir -p $(dir $(OBJS_PATH)/$<)
+	@$(AS) $(BFLAGS) $(DIRFLAGS) $(DEFFLAGS) -c $< -o $@
+
+# Сообщаем мейку, чтобы не удалял наши файлы с зависимостями после
+# окончания их использования.
+$(DEPS_PATH)/%.d: ;
+.PRECIOUS: $(DEPS_PATH)/%.d
