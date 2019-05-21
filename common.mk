@@ -1,14 +1,15 @@
-# make without args -> make clean
-
 ifndef DEPS_PATH
+# Default path to dep files
 export DEPS_PATH := .deps
 endif
 
 ifndef OBJS_PATH
+# Default path to obj files
 export OBJS_PATH := .objs
 endif
 
 ifndef BIN_PATH
+# Default path to bin file
 export BIN_PATH := .bin
 endif
 
@@ -18,11 +19,12 @@ export BUILD := $(MAKECMDGOALS)
 endif
 
 ifndef BUILD
+# Default BUILD
 BUILD := all
 endif
 
-# default name
 ifndef NAME
+# Default name
 export NAME := run_me
 endif
 
@@ -38,6 +40,7 @@ endif
 $(info )
 endif
 
+# Clean target declaration
 .PHONY: clean
 clean: clean_all
 	rm -rf $(BIN_PATH)
