@@ -7,32 +7,37 @@
 # CFLAGS     - Сишные флаги линковки.
 # LDFLAGS    - Общие флаги линковки.
 
+# Linker
 LD := g++
-OBJDUMP := objdump
-SIZE := size
 
-CFLAGS := -Wl,--no-as-needed -pthread
+# Command to disassembly binary file
+OBJDUMP := objdump
+
+# Command to print size
+SIZE := size
 
 # Пути расположения конечных файлов.
 BINARY_FILE := $(BIN_PATH)/$(NAME).elf
 MAP_FILE := $(BIN_PATH)/$(NAME).map
 ASM_FILE := $(BIN_PATH)/$(NAME).asm
 
-# Добавляем общие флаги линковки
+# Linker C flags
+CFLAGS := -Wl,--no-as-needed -pthread
 CFLAGS += -Wall -g3 -Wextra -Werror
+
+# Common flags
 LDFLAGS += -Xlinker --gc-sections
 LDFLAGS += -o $@ -Wl,-Map="$(MAP_FILE)" $(MEMORY_PRINT)
 LDFLAGS	+= -lm
 
-# Добавляем зависимость бинарника от мейкфайов, которые встречались
-# до текущего момента
+# Dependencies from all makefiles
 COMMON_OBJ_DEPS := $(MAKEFILE_LIST)
 
+# If ASM==on -> function ASM_GEN generating asm files
 ifeq ($(ASM),on)
-# Если флаг присутствует, то пререквезитом является бинарник.
 ASM_GEN = $(ASM_FILE)
 else
-# Иначе удаляем ассемблерный файл на случай недоразумений с устаревшим файлом.
+# else remove old asm files
 ASM_GEN = $(shell rm -rf $(ASM_FILE))
 endif
 
@@ -46,15 +51,17 @@ $(info )
 endif
 endif
 
+# Set defaul size output format
 ifndef SIZE_OUTPUT
 SIZE_OUTPUT := berkeley
 endif
 
-# Правило генерации ассемблерного файла
+# Target for asm file generation
 $(ASM_FILE): $(BINARY_FILE)
 	@echo 'Assembler file generating'
 	@$(OBJDUMP) --source -D $(BINARY_FILE) > $(ASM_FILE)
 
+# Main target to create binary file
 $(BINARY_FILE): $(OBJS) $(COMMON_OBJ_DEPS)
 	@mkdir -p $(BIN_PATH)
 	@echo

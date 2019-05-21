@@ -1,39 +1,33 @@
-# Файл содержит общие настройки для компиляции и линковки.
-
-# --0. Выбираем место хранения долгоживущих файлов.
-
-# Папка *.d содержит флаги компиляции предыдущей сборки (.flags),
-# а также файлы с указанием зависиомстей (.d). Файлы остаются с предыдущих
-# компиляций и на их основе решается - требуется ли перекомпиляция исходника.
-
-# Папка *.objs содержит объектные файлы на основе которыйх линкуется
-# конечный бинарник.
-
-# --1. Выбираем уровень оптимизации
-# Если не задан другой уровень оптимизации то по умолчанию -Os
+# Set default level of optimization
 ifndef OPTIMIZATION_LVL
 OPTIMIZATION_LVL := -Os
 endif
 
-# --2. Выбираем тип сборки debug/release
-# Включение отладочных функций (DEBUG/RELEASE сборка)
 ifdef DEBUG
 TYPE_OF_BUILD := DEBUG
 else
 TYPE_OF_BUILD := RELEASE
 endif
 
+# Adding define to u code
 DEFS += $(TYPE_OF_BUILD)
 
-# --3. Выбираем с каким стандартом собирать
-# Если никто не сказал обратного то мы всегда собираем с 17
+# Set default standard
 ifndef CPP_STANDARD
 CPP_STANDARD := -std=c++17
 endif
 
-# --4. Выбираем включать ли flto. Вычисляемое в момент запроса значение
+# if (undefined FLTO && OPTIMIZATION_LVL!= -O0) {
+# 	FLTO_FLAG = -flto
+# } else {
+# 	if (FLTO == on) {
+# 		FLTO_FLAG = -flto
+# 	} else {
+# 		FLTO_FLAG = empty
+# 	}
+# }
 ifndef FLTO
-ifneq ($(CPP_STANDARD), -O0)
+ifneq ($(OPTIMIZATION_LVL), -O0)
 FLTO_FLAG := -flto
 endif
 else
@@ -44,6 +38,7 @@ FLTO_FLAG :=
 endif
 endif
 
+# Set default silence mode
 ifndef SILENCE
 SILENCE := true
 endif
