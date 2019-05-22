@@ -10,7 +10,7 @@ endif
 
 ifndef BIN_PATH
 # Default path to bin file
-export BIN_PATH := .bin
+export BIN_PATH := bin
 endif
 
 # BUILD TYPE
