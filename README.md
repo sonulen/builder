@@ -9,6 +9,10 @@ Builder solve tasks:
 The directory contains a simple makefile - `makefile_simple`.  
 And makefile with many settings - `makefile_full`.
 
+Your project structure may look something like this:
+
+<div style="text-align:center"><img src ="Project_structure.png" /></div>
+
 # How to use?
 
 ## Simple
@@ -20,10 +24,6 @@ And makefile with many settings - `makefile_full`.
 
 Builder take all you source files (\*.c \*.cpp \*.s \*.S) from current directory and will try to compile these.
 All subdirs in this directory added like `-I` to sources, for searching include files.
-
-Your project structure may look something like this:
-
-<div style="text-align:center"><img src ="Project_structure.png" /></div>
 
 ## Divide and rule
 
