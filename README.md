@@ -63,3 +63,54 @@ All subdirs in this directory added like `-I` to sources, for searching include 
 | FLTO | Flag -flto enabled? | No | Anything. Checks whether a variable is defined. | `-flto` or `empty`. look [settings.mk](settings.mk) |
 | DIRS | Path to directories for searching include files. | Yes | - | empty |
 | SOURCES | Path to source files. | Yes | - | empty |
+
+# Output example
+
+If u set `SILENCE == off` you can see all variables:
+
+```shell                                 
+Info from builder.mk file:
+Path to builder.mk = builder/builder.mk
+Path to common.mk = builder/common.mk
+Path to settings.mk = builder/settings.mk
+Path to compile.mk = builder/compile.mk
+Path to link.mk = builder/link.mk
+
+Info from common.mk file:
+Binary file path = bin
+Deps file path = .deps
+Objs file path = .objs
+Build type = all
+Name of result file = runnable
+
+Info from settings.mk file:
+Optimization level = -Os
+Type of build = RELEASE
+Cpp standard = -std=c++17
+Flto flag = -flto
+
+Info from compile_settings.mk file:
+Sources files = ./class.cpp ./telemetry/telemetry.cpp ./main.cpp
+Object files = .objs/./class.o .objs/./telemetry/telemetry.o .objs/./main.o
+Deps files = .deps/./class.d .deps/./telemetry/telemetry.d .deps/./main.d
+Include dirs (with headers) = . ./bin ./telemetry ./builder
+Defines = RELEASE
+Flags for C = -Os -flto -Wall  -Wextra -Werror -ffunction-sections
+Flags for C++ = -Os -flto -Wall  -Wextra -Werror -ffunction-sections -pthread -std=c++17
+Common deps for sources =  makefile builder/builder.mk builder/common.mk builder/settings.mk builder/compile.mk builder/prebuild.mk builder/compile_settings.mk
+
+Info from link.mk file:
+Linker = g++
+Linker C flags = -Wl,--no-as-needed -pthread -Wall -g3 -Wextra -Werror
+Linker flags = -Xlinker --gc-sections -o  -Wl,-Map="bin/runnable.map"  -lm
+
+[CPP] class.cpp
+[CPP] telemetry/telemetry.cpp
+[CPP] main.cpp
+
+[LD] bin/runnable.elf
+
+Size summary:
+  text    data     bss     dec     hex filename
+  2172     696     280    3148     c4c bin/runnable.elf
+```
