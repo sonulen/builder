@@ -37,28 +37,27 @@ All subdirs in this directory added like `-I` to sources, for searching include 
 
 | Variable name | Description | Is it necessary? | Possible values | Default value	|
 |---	|---	|---	|---	|---	|
-| SILENCE | Is silent mode on? 	| No | `false` / `true` | `true` |
-| PATH_TO_BUILDER |  |  |  |  `.` 	|
-| DEPS_PATH |  |  |  | `.deps` |
-| OBJS_PATH |  |  |  | `.objs` |
-| BIN_PATH |  |  |  | `bin` |
-| BUILD |  |  |  | `$(MAKECMDGOALS)` |
-| NAME |  |  |  | `run_me` |
-| AS |  |  | constant value | `gcc` |
-| CC |  |  | constant value | `gcc` |
-| CPP |  |  | constant value | `g++` |
-| G_OPTION |  |  |  | `-g3` or `empty`. look [compile_settings.mk](compile_settings.mk) |
+| SILENCE | Is silent mode on? 	| No | `on` / `off` | `on` |
+| PATH_TO_BUILDER | Path to `builder.mk` file   | No | - |  `builder/` 	|
+| DEPS_PATH | Path where to create dependencies files | No | - | `.deps` |
+| OBJS_PATH | Path where to create object files | No | - | `.objs` |
+| BIN_PATH | Path where to create executable file | No | - | `bin` |
+| NAME | The name of the resulting file | No | - | `run_me` |
+| AS | Assembler compiler | - | constant value | `gcc` |
+| CC | C compiler | - | constant value | `gcc` |
+| CPP | Cpp compiler | - | constant value | `g++` |
+| G_OPTION | Flag to generates debug information to be used by GDB debugger | No | `-g` / `-g0` / `-g1` / `-g3` | `-g3` or `empty`. look [compile_settings.mk](compile_settings.mk) |
 | BFLAGS | Common flags passed to the C and C ++  compiler. You can add flags, but do this with `+=` | No | - | look [compile_settings.mk](compile_settings.mk) |
 | CFLAGS | Flags passed to the C compiler. You can add flags, but do this with `+=`. | No | - | look [compile_settings.mk](compile_settings.mk) |
 | CPPFLAGS | Flags passed to the C++ compiler. You can add flags, but do this with `+=`. | No | - | look [compile_settings.mk](compile_settings.mk) |
-| DEBUG | If defined -> this debug build, else this release build. |  | Anything. Checks whether a variable is defined. | `empty` |
-| TYPE_OF_BUILD |  |  |  |  |
+| DEBUG | If defined -> this debug build, else this release build. | No | Anything. Checks whether a variable is defined. | `empty` |
+| TYPE_OF_BUILD | If DEBUG defined takes `DEBUG` else `RELEASE`  | No | Automatic variable | `RELEASE` |
 | DEFS | Adding defines to u code. You can add defines, but do this with `+=` | No | - | `$(TYPE_OF_BUILD)`  |
-| LD |  |  | constant value | `g++`|
-| LDFLAGS | Common linker flags. You can add flags, but do this with `+=`. |  | what u want. example: `LDFLAGS += -lgcov -lgtest -lgmock` | look [link.mk](link.mk) |
-| ASM |  |  |  |  |
-| SIZE_OUTPUT |  |  |  |  |
-| OPTIMIZATION_LVL |  |  | [Optimize-Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) | `-Os` |
+| LD | Linker | - | constant value | `g++`|
+| LDFLAGS | Common linker flags. You can add flags, but do this with `+=`. | No | what u want. example: `LDFLAGS += -lgcov -lgtest -lgmock` | look [link.mk](link.mk) |
+| ASM | Do need to create an ASM file? If the value is "on" then the file will be generated. | No | `on` / `anything` | empty |
+| SIZE_OUTPUT | Format to print size | No | `berkeley` / `SysV` | `berkeley` |
+| OPTIMIZATION_LVL | Setting the code optimization level | No | [Optimize-Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) | `-Os` |
 | CPP_STANDARD | Choose c++ standard. | No | [cxx-status](https://www.gnu.org/software/gcc/projects/cxx-status.html) | `-std=c++17` |
 | FLTO | Flag -flto enabled? | No | Anything. Checks whether a variable is defined. | `-flto` or `empty`. look [settings.mk](settings.mk) |
 | DIRS | Path to directories for searching include files. | Yes | - | empty |

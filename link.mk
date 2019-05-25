@@ -31,7 +31,7 @@ else
 ASM_GEN = $(shell rm -rf $(ASM_FILE))
 endif
 
-ifeq ($(SILENCE), false)
+ifeq ($(SILENCE), off)
 ifneq ($(BUILD),clean)
 $(info Info from link.mk file: )
 $(info Linker = $(LD))

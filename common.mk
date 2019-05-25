@@ -28,7 +28,7 @@ ifndef NAME
 export NAME := run_me
 endif
 
-ifeq ($(SILENCE), false)
+ifeq ($(SILENCE), off)
 $(info Info from common.mk file: )
 $(info Binary file path = $(BIN_PATH))
 $(info Deps file path = $(DEPS_PATH))

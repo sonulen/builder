@@ -1,6 +1,6 @@
 # Set current directory
 ifndef PATH_TO_BUILDER
-PATH_TO_BUILDER := .
+PATH_TO_BUILDER := builder/
 endif
 
 # Directory with all makefiles
@@ -12,7 +12,7 @@ COMPILE_PATH = $(BUILDER_DIR)compile.mk
 LINK_PATH = $(BUILDER_DIR)link.mk
 
 # Print vars
-ifeq ($(SILENCE), false)
+ifeq ($(SILENCE), off)
 $(info Info from builder.mk file:)
 $(info Path to builder.mk = $(PATH_TO_BUILDER))
 $(info Path to common.mk = $(COMMON_PATH))

@@ -1,6 +1,6 @@
-# Set silence mode [default: true]
-# If silence == false -> print usage commands
-SILENCE := false
+# Set silence mode [default: on]
+# If silence == off -> print usage commands
+SILENCE := off
 
 # Name of result file [%NAME%.elf] [default: run_me.elf]
 NAME := runnable
