@@ -1,0 +1,13 @@
+# Set silence mode [default: true]
+# If silence == off -> print usage commands
+SILENCE := off
+
+# Name of result file [%NAME%.elf] [default: run_me.elf]
+NAME := runnable
+
+DIRS := $(shell find . -not -path '*/\.*' -not -path '../builder' -type d)
+SOURCES := $(shell find . -type f \( -name '*.c' -o -name '*.cpp' -o -name '*.s' -o -name '*.S' \))
+
+
+PATH_TO_BUILDER = builder/builder.mk
+include $(PATH_TO_BUILDER)

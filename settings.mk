@@ -43,7 +43,7 @@ ifndef SILENCE
 SILENCE := true
 endif
 
-ifeq ($(SILENCE), false)
+ifeq ($(SILENCE), off)
 $(info Info from settings.mk file: )
 $(info Optimization level = $(OPTIMIZATION_LVL))
 $(info Type of build = $(TYPE_OF_BUILD))

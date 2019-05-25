@@ -56,7 +56,7 @@ POSTCOMPILE = @mv -f $(DEPS_PATH)/$*.Td $(DEPS_PATH)/$*.d && touch $@
 COMMON_OBJ_DEPS := $(MAKEFILE_LIST)
 
 
-ifeq ($(SILENCE), false)
+ifeq ($(SILENCE), off)
 $(info Info from compile_settings.mk file:)
 $(info Sources files = $(SOURCES))
 $(info Object files = $(OBJS))

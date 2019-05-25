@@ -10,7 +10,7 @@ endif
 
 ifndef BIN_PATH
 # Default path to bin file
-export BIN_PATH := .bin
+export BIN_PATH := bin
 endif
 
 # BUILD TYPE
@@ -28,7 +28,7 @@ ifndef NAME
 export NAME := run_me
 endif
 
-ifeq ($(SILENCE), false)
+ifeq ($(SILENCE), off)
 $(info Info from common.mk file: )
 $(info Binary file path = $(BIN_PATH))
 $(info Deps file path = $(DEPS_PATH))

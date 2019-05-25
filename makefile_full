@@ -1,6 +1,6 @@
-# Set silence mode [default: true]
-# If silence == false -> print usage commands
-SILENCE := false
+# Set silence mode [default: on]
+# If silence == off -> print usage commands
+SILENCE := off
 
 # Name of result file [%NAME%.elf] [default: run_me.elf]
 NAME := runnable
@@ -25,6 +25,7 @@ FLTO := on
 # Set GDB debuging info [default: if DEGUB_BUILD -> -g3 else None]
 G_OPTION := -g3
 
+# You can include other dirs: DIRS += /usr/include/python2.7
 DIRS := $(shell find . -not -path '*/\.*' -not -path '../builder' -type d)
 SOURCES := $(shell find . -type f \( -name '*.c' -o -name '*.cpp' -o -name '*.s' -o -name '*.S' \))
 
