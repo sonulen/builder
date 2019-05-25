@@ -1,13 +1,15 @@
 # builder
 
-A generic makefile for use with small/medium C and C++ projects. Allows for easy project setup without the need to create tedious build rules or dependency lists.
+A generic makefiles for use with small/medium C and C++ projects. Allows for easy project setup without the need to create tedious build rules or dependency lists.
 
-Builder solve tasks:
-1. Compile c, c++, asm file into objects.
+**builder** solves the following problems:
+1. Compiling a c, c ++, asm files into objects.
 2. Runs the linker, which creates an executable file.
 
-The directory contains a simple makefile - `makefile_simple`.  
+Repository contains a simple makefile for example - `makefile_simple`.  
 And makefile with many settings - `makefile_full`.
+
+---
 
 Your project structure may look something like this:
 
@@ -19,18 +21,19 @@ Your project structure may look something like this:
 
 1. Copy [makefile_simple](makefile_simple) to your project.
 2. Rename it to `makefile`.
-3. Set correctly path to `builder/builder.mk` into variable.
+3. Set correctly path to `builder/builder.mk` into corresponding variable (`PATH_TO_BUILDER`).
 4. Run `make` or `make all`.
 
-Builder take all you source files (\*.c \*.cpp \*.s \*.S) from current directory and will try to compile these.
+**Builder** take all you source files (\*.c \*.cpp \*.s \*.S) from current directory and will try to compile these.
+
 All subdirs in this directory added like `-I` to sources, for searching include files.
 
 ## Divide and rule
 
 1. Copy [makefile_full](makefile_full) to your project.
 2. Rename it to `makefile`.
-3. Set correctly path to `builder/builder.mk` into variable.
-5. Set all variables as you like (see point [Settings](#settings)).
+3. Set correctly path to `builder/builder.mk` into corresponding variable (`PATH_TO_BUILDER`).
+5. Set all variables as you like (look at [Settings](#settings)).
 4. Run `make` or `make all`.
 
 # Settings
